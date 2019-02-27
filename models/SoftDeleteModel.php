@@ -29,7 +29,7 @@ abstract class SoftDeleteModel extends ActiveRecord
             return false;
         }
 
-        $this->deleted_at = strftime('%Y-%m-%d %T');
+        $this->deleted_at = (new \DateTime())->format('Y-m-d H:i:s');
         $result = $this->save();
 
         $this->setOldAttributes(null);
@@ -45,8 +45,7 @@ abstract class SoftDeleteModel extends ActiveRecord
     {
         if ($this->isDeleted()) {
             $this->deleted_at = null;
-            $this->save();
-            return true;
+            return $this->save();
         }
 
         return false;
